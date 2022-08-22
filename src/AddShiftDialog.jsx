@@ -1,8 +1,9 @@
 import React from "react";
 
-export default function AddShiftDialog() {
+export default function AddShiftDialog({ currentJob }) {
+  console.log(currentJob);
   let shift = {
-    job: null,
+    job: currentJob,
     date: null,
     workDuration: null,
     tip: null,
@@ -24,7 +25,6 @@ export default function AddShiftDialog() {
     shift.tip = e.target.value;
   };
 
-  console.log(getStartingTime);
   const workDuration = () => {
     // var startTime = moment(getStartingTime, "HH:mm:ss a");
   };
@@ -42,10 +42,11 @@ export default function AddShiftDialog() {
       localStorage.setItem("shifts", JSON.stringify(shiftsList));
     } else {
       let shiftsList = [];
+      // console.log(JSON.parse(localStorage.shifts));
       shiftsList = JSON.parse(localStorage.shifts);
       shiftsList.push(currentShift);
-      console.log(123);
       console.log(shiftsList);
+
       localStorage.setItem("shifts", JSON.stringify(shiftsList));
     }
   };

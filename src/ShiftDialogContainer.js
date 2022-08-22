@@ -1,13 +1,15 @@
 import React from "react";
 import AddShiftDialog from "./AddShiftDialog";
 import SelectJob from "./SelectJob";
+import { useState } from "react";
 
 export default function ShiftDialogContainer() {
+  const [currentJob, setCurrentJob] = useState(null);
   return (
     <div>
       <h1>Add Shift</h1>
-      <SelectJob></SelectJob>
-      <AddShiftDialog></AddShiftDialog>
+      <SelectJob setCurrentJob={setCurrentJob}></SelectJob>
+      <AddShiftDialog currentJob={currentJob}></AddShiftDialog>
     </div>
   );
 }

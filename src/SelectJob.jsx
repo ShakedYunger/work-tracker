@@ -1,18 +1,13 @@
 import React from "react";
-import { useState } from "react";
 
-export default function SelectJob() {
-  const [showJobs, setShowJobs] = useState(false);
-
-  const renderingJobsName = () => {
-    let jobs = JSON.parse(localStorage.jobs);
-    const jobsNames = jobs.map((job) => <div>{job.key}</div>);
-    return <div>{jobsNames}</div>;
-  };
+export default function SelectJob({ setCurrentJob }) {
+  // const renderingJobsName = () => {
+  let jobs = JSON.parse(localStorage.jobs);
+  const jobsNames = jobs.map((job) => <option>{Object.keys(job)}</option>);
   return (
-    <div>
-      <button onClick={() => setShowJobs(true)}> Select Job</button>
-      {showJobs && renderingJobsName()}
-    </div>
+    <select onChange={(e) => setCurrentJob(e.target.value)}>
+      <option>select job</option>
+      {jobsNames}
+    </select>
   );
 }
