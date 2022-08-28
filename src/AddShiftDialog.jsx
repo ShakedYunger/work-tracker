@@ -1,32 +1,57 @@
 import React from "react";
+import { useState } from "react";
 
 export default function AddShiftDialog({ currentJob }) {
-  console.log(currentJob);
-  let shift = {
-    job: currentJob,
-    date: null,
-    workDuration: null,
-    tip: null,
+  // const [shift, setShift] = useState({
+  //   job: null,
+  //   date: null,
+  //   workDuration: null,
+  //   tip: null,
+  // });
+  console.log(shift.job);
+
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+
+  const addJobToState = () => {
+    setShift((pervState) => {
+      return { ...pervState, job: currentJob };
+    });
   };
 
   const getDate = (e) => {
-    shift.date = e.target.value;
+    setShift((pervState) => {
+      return { ...pervState, date: e.target.value };
+    });
   };
 
   const getStartingTime = (e) => {
+    setStartTime(e.target.value);
+    if (endTime !== null) workDuration(startTime, endTime);
     return e.target.value;
   };
-
   const getEndingTime = (e) => {
+    setEndTime(e.target.value);
+    if (startTime !== null) workDuration(startTime, e.target.value);
     return e.target.value;
   };
 
   const getTip = (e) => {
-    shift.tip = e.target.value;
+    setShift((pervState) => {
+      return { ...pervState, tip: e.target.value };
+    });
   };
 
-  const workDuration = () => {
-    // var startTime = moment(getStartingTime, "HH:mm:ss a");
+  const workDuration = (startTime, endTime) => {
+    console.log(startTime);
+    console.log(endTime);
+    const [startHour, startMinutes] = startTime.split(":");
+    const [endHour, endMinutes] = endTime.split(":");
+    let startMinutesSum = startHour * 60 + Number(startMinutes);
+    let endMinutesSum = endHour * 60 + Number(endMinutes);
+    setShift((pervState) => {
+      return { ...pervState, workDuration: endMinutesSum - startMinutesSum };
+    });
   };
 
   const addingShiftToLocalstorage = () => {
