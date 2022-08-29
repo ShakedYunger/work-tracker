@@ -10,12 +10,11 @@ export default function AddJobDialog() {
   const addingHourlyWagetoJob = (e) => (job.hourlyWage = e.target.value);
 
   const addingJobToLocalstorage = () => {
-    console.log(localStorage.jobs === undefined);
     let keyName = job.name;
     let obj = {
       [keyName]: job.hourlyWage,
     };
-    if (localStorage.jobs === undefined || localStorage.jobs === "") {
+    if (!localStorage.jobs) {
       let jobList = [];
       console.log(keyName);
       jobList[0] = obj;

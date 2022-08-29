@@ -3,8 +3,9 @@ import JobReportPreview from "./JobReportPreview";
 import ShiftDialogContainer from "./ShiftDialogContainer";
 
 export default function JobReportList({ time }) {
-  if (time === "month") {
+  if (time === "month" && localStorage.jobs) {
     let jobs = JSON.parse(localStorage.jobs);
+
     //   let totalSalary = 0;
     // let shifts= JSON.parse(localStorage.shifts);
     // const shiftsList = jobs.map((shift) => (shift.)

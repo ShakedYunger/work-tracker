@@ -1,17 +1,16 @@
 import React from "react";
 
-export default function SelectJob({ setCurrentJob }) {
-  if (localStorage.jobs === undefined || localStorage.jobs === "") {
-  } else {
-    let jobs = JSON.parse(localStorage.jobs);
-    const jobsNames = jobs.map((job) => (
-      <option key={Object.keys(job)}>{Object.keys(job)}</option>
-    ));
-    return (
-      <select onChange={(e) => setCurrentJob(e.target.value)}>
-        <option>select job</option>
-        {jobsNames}
-      </select>
-    );
+export default function SelectJob({ setJob, jobs }) {
+  if (!jobs) {
+    return <div>no jobs</div>;
   }
+  const jobsNames = jobs.map((job) => (
+    <option key={Object.keys(job)}>{Object.keys(job)}</option>
+  ));
+  return (
+    <select onChange={setJob}>
+      <option disabled>select job</option>
+      {jobsNames}
+    </select>
+  );
 }
