@@ -1,29 +1,24 @@
 import React, { useState, useEffect } from "react";
 import SelectJob from "./SelectJob";
 
-export default function AddShiftDialog({ currentJob }) {
+export default function AddShiftDialog() {
   const [shift, setShift] = useState({
     job: null,
     date: null,
     workDuration: null,
     tip: null,
   });
-
-  // const [jobs, setJobs] = useState(null);
+  const [jobs, setJobs] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
-  // useEffect(() => {
-  //   if (localStorage.jobs) {
-  //     const parsedJobs = JSON.parse(localStorage.jobs);
-  //     console.log(parsedJobs);
-  //     setJobs(parsedJobs);
-  //   }
-  //   // Code here will run after *every* render
-  // }, []);
-  let jobs = null;
-  if (localStorage.jobs) {
-    jobs = JSON.parse(localStorage.jobs);
-  }
+
+  useEffect(() => {
+    if (localStorage.jobs) {
+      const parsedJobs = JSON.parse(localStorage.jobs);
+      setJobs(parsedJobs);
+    }
+  }, [localStorage.jobs]);
+
   const addJobToState = (e) => {
     setShift((pervState) => {
       return { ...pervState, job: e.target.value };
@@ -88,7 +83,7 @@ export default function AddShiftDialog({ currentJob }) {
   };
   return (
     <label>
-      <SelectJob setJob={(addJobToState, jobs)}></SelectJob>
+      <SelectJob setJob={addJobToState} jobs={jobs}></SelectJob>
       date:
       <input type={"date"} onChange={getDate}></input>
       from

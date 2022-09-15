@@ -16,7 +16,6 @@ export default function AddJobDialog() {
     };
     if (!localStorage.jobs) {
       let jobList = [];
-      console.log(keyName);
       jobList[0] = obj;
       localStorage.setItem("jobs", JSON.stringify(jobList));
     } else {
