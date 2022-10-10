@@ -2,36 +2,38 @@ import React, { useState } from "react";
 import JobReportPreview from "./JobReportPreview";
 import ShiftDialogContainer from "./ShiftDialogContainer";
 
-export default function JobReportList({ time }) {
-  const [totalSalary, setTotalSalary] = useState(null);
-  const convertMinutesToSalary = (time, workDuration, job) => {
-    let payPerHour = null;
-    let jobs = JSON.parse(localStorage.jobs);
-    for (let i = 0; i < jobs.length; i++) {
-      if (Object.keys(jobs[i])[0] === job) {
-        console.log(jobs[i]);
-        payPerHour = Object.values(jobs[i]);
-      }
+export default function JobReportList({ time, shifts, jobs }) {
+  const [totalSalary, setTotalSalary] = useState(() => {
+    {
     }
+  });
+
+  const convertMinutesToSalary = (time, workDuration, jobName) => {
+    let payPerHour = jobs[jobName];
     let payPerMinutes = payPerHour / 60;
-    let dailySalary = workDuration * payPerMinutes;
-    // setTotalSalary({ time: dailySalary });
+    let dailySalary = Math.floor(workDuration * payPerMinutes);
+    // setTotalSalary((totalSalary) => [...totalSalary, { [time]: dailySalary }]);
+    console.log(totalSalary);
     return dailySalary;
   };
-  if (time === "month" && localStorage.jobs) {
-    let shifts = JSON.parse(localStorage.shifts);
-    const shiftsList = shifts.map((shift) => (
-      <JobReportPreview
-        job={shift.job}
-        date={shift.date}
-        dailySalary={convertMinutesToSalary(
-          time,
-          shift.workDuration,
-          shift.job
-        )}
-        tip={shift.tip}
-      ></JobReportPreview>
-    ));
+
+  if (time === "month" && shifts) {
+    const shiftsList = shifts.map((shift) => {
+      return (
+        <JobReportPreview
+          workDuration={shift.workDuration}
+          job={shift.job}
+          date={shift.date}
+          dailySalary={convertMinutesToSalary(
+            time,
+            shift.workDuration,
+            shift.job
+          )}
+          tip={shift.tip}
+          time={time}
+        ></JobReportPreview>
+      );
+    });
 
     return (
       <div>

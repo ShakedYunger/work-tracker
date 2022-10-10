@@ -1,40 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function AddJobDialog() {
-  let job = {
-    name: null,
-    hourlyWage: null,
+export default function AddJobDialog({ jobs, setJobs }) {
+  const [job, setJob] = useState();
+
+  const setJobName = (e) => {
+    const name = e.target.value;
+    setJob((job) => {
+      return { ...job, name };
+    });
   };
 
-  const addingNametoJob = (e) => (job.name = e.target.value);
-  const addingHourlyWagetoJob = (e) => (job.hourlyWage = e.target.value);
+  const setJobWage = (e) => {
+    const hourlyWage = e.target.value;
+    setJob((job) => {
+      return { ...job, hourlyWage };
+    });
+  };
 
-  const addingJobToLocalstorage = () => {
-    let keyName = job.name;
-    let obj = {
-      [keyName]: job.hourlyWage,
-    };
-    if (!localStorage.jobs) {
-      let jobList = [];
-      jobList[0] = obj;
-      localStorage.setItem("jobs", JSON.stringify(jobList));
-    } else {
-      let jobList = JSON.parse(localStorage.getItem("jobs"));
-      jobList.push(obj);
-      localStorage.setItem("jobs", JSON.stringify(jobList));
-    }
+  const addJob = () => {
+    setJobs((jobs) => {
+      return { ...jobs, [job.name]: job.hourlyWage };
+    });
   };
 
   return (
     <div>
       <h1>add job</h1>
       job's name:
-      <input type={"text"} onChange={addingNametoJob}></input>
+      <input type={"text"} onChange={setJobName}></input>
       <br></br>
       hourly wage:
-      <input type={"text"} onChange={addingHourlyWagetoJob}></input>
+      <input type={"text"} onChange={setJobWage}></input>
       <br></br>
-      <button onClick={addingJobToLocalstorage}>add job</button>
+      <button onClick={addJob}>add job</button>
     </div>
   );
 }

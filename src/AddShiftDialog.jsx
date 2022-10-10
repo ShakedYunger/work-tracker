@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
 import SelectJob from "./SelectJob";
 
-export default function AddShiftDialog() {
+export default function AddShiftDialog({ jobs, setShifts }) {
   const [shift, setShift] = useState({
     job: null,
     date: null,
     workDuration: null,
     tip: null,
   });
-  const [jobs, setJobs] = useState(null);
+
+  // const [jobs, setJobs] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
-
-  useEffect(() => {
-    if (localStorage.jobs) {
-      const parsedJobs = JSON.parse(localStorage.jobs);
-      setJobs(parsedJobs);
-    }
-  }, [localStorage.jobs]);
 
   const addJobToState = (e) => {
     setShift((pervState) => {
@@ -49,38 +43,20 @@ export default function AddShiftDialog() {
   };
 
   const workDuration = (startTime, endTime) => {
-    console.log(startTime);
-    console.log(endTime);
     const [startHour, startMinutes] = startTime.split(":");
     const [endHour, endMinutes] = endTime.split(":");
-    let startMinutesSum = startHour * 60 + Number(startMinutes);
-    let endMinutesSum = endHour * 60 + Number(endMinutes);
+    const startMinutesSum = startHour * 60 + Number(startMinutes);
+    const endMinutesSum = endHour * 60 + Number(endMinutes);
     setShift((pervState) => {
       return { ...pervState, workDuration: endMinutesSum - startMinutesSum };
     });
   };
 
-  const addingShiftToLocalstorage = () => {
-    let currentShift = {
-      job: shift.job,
-      date: shift.date,
-      workDuration: shift.workDuration,
-      tip: shift.tip,
-    };
-    if (localStorage.shifts === undefined || localStorage.shifts === "") {
-      let shiftsList = [];
-      shiftsList[0] = currentShift;
-      localStorage.setItem("shifts", JSON.stringify(shiftsList));
-    } else {
-      let shiftsList = [];
-      // console.log(JSON.parse(localStorage.shifts));
-      shiftsList = JSON.parse(localStorage.shifts);
-      shiftsList.push(currentShift);
-      console.log(shiftsList);
-
-      localStorage.setItem("shifts", JSON.stringify(shiftsList));
-    }
+  const addShift = () => {
+    console.log(shift);
+    setShifts((shifts) => [...shifts, shift]);
   };
+
   return (
     <label>
       <SelectJob setJob={addJobToState} jobs={jobs}></SelectJob>
@@ -92,7 +68,7 @@ export default function AddShiftDialog() {
       <input type={"time"} onChange={getEndingTime}></input>
       tip:
       <input onChange={getTip}></input>
-      <button onClick={addingShiftToLocalstorage}>submit</button>
+      <button onClick={addShift}>submit</button>
     </label>
   );
 }
